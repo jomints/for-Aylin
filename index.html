@@ -12,27 +12,31 @@
         }
         .overlay {
             height: 100%; display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.5); /* Dimming background for text visibility */
+            background: rgba(0, 0, 0, 0.5);
         }
         .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px; border-radius: 25px;
+            padding: 30px; border-radius: 25px;
             text-align: center; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            width: 90%; max-width: 450px; position: relative; border: 3px solid #ff4d6d;
+            width: 90%; max-width: 450px; 
+            min-height: 250px; /* Ensures space for all nicknames */
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; border: 3px solid #ff4d6d;
             z-index: 10;
         }
         .hidden { display: none; }
         h1 { 
-            font-size: 1.6rem; color: #222; line-height: 1.4; 
-            margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
+            font-size: 1.4rem; color: #222; line-height: 1.5; 
+            margin-bottom: 15px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
         }
         .subtext { font-size: 1.1rem; color: #ff4d6d; font-weight: bold; display: block; margin-bottom: 20px; }
         
         button {
-            padding: 12px 30px; border-radius: 50px; border: none;
+            padding: 12px 25px; border-radius: 50px; border: none;
             cursor: pointer; font-weight: bold; transition: 0.2s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
         }
         #yesBtn { background: #ff4d6d; color: white; margin: 10px; font-size: 1.1rem; }
         .no-btn { background: #444; color: white; position: absolute; z-index: 100; }
@@ -51,8 +55,8 @@
         <audio id="successSound" src="https://www.myinstants.com/media/sounds/party-horn.mp3"></audio>
 
         <div id="stage1" class="card">
-            <h1>Do you know Dr. Jomin / Jommiiii / Pichekanran / Plumber / Thundam Thundam?</h1>
-            <div style="height: 100px; position: relative; margin-top: 20px;">
+            <h1>Do you know<br>Dr. Jomin / Jommiiii / Pichekanran / Plumber / Thundam Thundam?</h1>
+            <div style="height: 120px; position: relative; margin-top: 10px;">
                 <button id="yesBtn" onclick="goToStage2()">Yes, unfortunately! 😂</button>
                 <button id="noBtn1" class="no-btn" onmouseover="jumpButton('noBtn1', 300)">No</button>
             </div>
@@ -63,7 +67,7 @@
             <input type="range" id="missSlider" min="1" max="10" value="1" oninput="checkSlider(this.value)">
             <p id="sliderValue">1</p>
             <button id="nextPageBtn" onclick="goToStage3()">Next Page</button>
-            <p style="font-size: 0.9rem; color: #444; margin-top: 15px; font-weight: bold;">Hint: If you don't miss me max, you can't see the next page! 😉</p>
+            <p style="font-size: 0.9rem; color: #444; margin-top: 15px; font-weight: bold;">Hint: Drag it to 10! 😉</p>
         </div>
 
         <div id="stage3" class="card hidden">
@@ -97,13 +101,12 @@
         const music = document.getElementById('bgMusic');
 
         const config = {
-            s1: { bg: 'https://i.postimg.cc/FKDBcngV/Whats-App-Image-2026-02-03-at-9-58-13-PM.jpg', music:'For kichhuu5.mp3' },
-            s2: { bg: 'https://i.postimg.cc/7ZQBZTxJ/Whats-App-Image-2026-02-03-at-9-58-14-PM.jpg', music:'For Ammu3.wav' },
-            s3: { bg: 'https://i.postimg.cc/tJ5kQsSY/Whats-App-Image-2026-02-03-at-9-58-13-PM-(1).jpg', music: 'For kichhuu6.mp3' },
-            s4: { bg: 'https://i.postimg.cc/RZqRyVcW/Whats-App-Image-2026-02-03-at-9-58-14-PM-(1).jpg', music: 'For kichhuu6.mp3' }
+            s1: { bg: 'https://i.postimg.cc/FKDBcngV/Whats-App-Image-2026-02-03-at-9-58-13-PM.jpg', music: 'music1.mp3' },
+            s2: { bg: 'https://i.postimg.cc/7ZQBZTxJ/Whats-App-Image-2026-02-03-at-9-58-14-PM.jpg', music: 'music2.wav' },
+            s3: { bg: 'https://i.postimg.cc/tJ5kQsSY/Whats-App-Image-2026-02-03-at-9-58-13-PM-(1).jpg', music: 'music3.mp3' },
+            s4: { bg: 'https://i.postimg.cc/RZqRyVcW/Whats-App-Image-2026-02-03-at-9-58-14-PM-(1).jpg', music: 'music3.mp3' }
         };
 
-        // Initialize Stage 1
         bgBody.style.backgroundImage = `url('${config.s1.bg}')`;
         music.src = config.s1.music;
 
@@ -129,10 +132,9 @@
         function showCelebration() {
             hideAll();
             show('successPage');
-            music.pause(); // Music stops for firework sounds as requested
+            music.pause();
             document.getElementById('successSound').play();
             
-            // Continuous Sparkles for 5 seconds
             var end = Date.now() + (5 * 1000);
             (function frame() {
                 confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
@@ -147,16 +149,15 @@
             });
         }
         function show(id) { document.getElementById(id).classList.remove('hidden'); }
+        
         function update(key) {
             bgBody.style.backgroundImage = `url('${config[key].bg}')`;
-            if(config[key].music && music.src !== config[key].music) {
+            if(config[key].music && music.getAttribute('src') !== config[key].music) {
                 music.src = config[key].music;
-                music.play();
+                music.load();
+                music.play().catch(e => console.log("Playback failed", e));
             }
         }
     </script>
 </body>
-
 </html>
-
-
