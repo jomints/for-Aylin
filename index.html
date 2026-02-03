@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Aylin ❤️</title>
+    <style>
+        body, html {
+            height: 100%; margin: 0; font-family: 'Georgia', serif;
+            background-size: cover; background-position: center; transition: 1s ease-in-out;
+            overflow: hidden;
+        }
+        .overlay {
+            height: 100%; display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.5); /* Dimming background for text visibility */
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px; border-radius: 25px;
+            text-align: center; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            width: 90%; max-width: 450px; position: relative; border: 3px solid #ff4d6d;
+            z-index: 10;
+        }
+        .hidden { display: none; }
+        h1 { 
+            font-size: 1.6rem; color: #222; line-height: 1.4; 
+            margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
+        }
+        .subtext { font-size: 1.1rem; color: #ff4d6d; font-weight: bold; display: block; margin-bottom: 20px; }
+        
+        button {
+            padding: 12px 30px; border-radius: 50px; border: none;
+            cursor: pointer; font-weight: bold; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        #yesBtn { background: #ff4d6d; color: white; margin: 10px; font-size: 1.1rem; }
+        .no-btn { background: #444; color: white; position: absolute; z-index: 100; }
+        
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #ff4d6d; margin: 20px 0; }
+        #nextPageBtn { background: #4caf50; color: white; opacity: 0.2; pointer-events: none; }
+        
+        .roses { font-size: 5rem; line-height: 1.2; margin: 10px 0; }
+        #sliderValue { font-weight: bold; color: #ff4d6d; font-size: 2.5rem; }
+    </style>
+</head>
+<body id="bgBody">
+
+    <div class="overlay">
+        <audio id="bgMusic" loop></audio>
+        <audio id="successSound" src="https://www.myinstants.com/media/sounds/party-horn.mp3"></audio>
+
+        <div id="stage1" class="card">
+            <h1>Do you know Dr. Jomin / Jommiiii / Pichekanran / Plumber / Thundam Thundam?</h1>
+            <div style="height: 100px; position: relative; margin-top: 20px;">
+                <button id="yesBtn" onclick="goToStage2()">Yes, unfortunately! 😂</button>
+                <button id="noBtn1" class="no-btn" onmouseover="jumpButton('noBtn1', 300)">No</button>
+            </div>
+        </div>
+
+        <div id="stage2" class="card hidden">
+            <h1>How much do you miss your Dr. Jomin / Pichekanran?</h1>
+            <input type="range" id="missSlider" min="1" max="10" value="1" oninput="checkSlider(this.value)">
+            <p id="sliderValue">1</p>
+            <button id="nextPageBtn" onclick="goToStage3()">Next Page</button>
+            <p style="font-size: 0.9rem; color: #444; margin-top: 15px; font-weight: bold;">Hint: If you don't miss me max, you can't see the next page! 😉</p>
+        </div>
+
+        <div id="stage3" class="card hidden">
+            <h1>Enne Ishtam anno? ❤️</h1>
+            <div style="height: 120px; position: relative;">
+                <button id="yesBtn" onclick="goToStage4()">Yes, I love you! 🥰</button>
+                <button id="noBtn2" class="no-btn" onmouseover="jumpButton('noBtn2', 80)">No</button>
+            </div>
+        </div>
+
+        <div id="stage4" class="card hidden">
+            <h1>Will You be my Valentine?</h1>
+            <span class="subtext">ee praveshum ninneke no paravan patuulallo</span>
+            <div style="height: 100px; position: relative;">
+                <button id="yesBtn" onclick="showCelebration()">YES!</button>
+                <button id="finalNo" class="no-btn" onmouseover="this.style.opacity='0'; setTimeout(()=>this.style.display='none', 400)">No</button>
+            </div>
+        </div>
+
+        <div id="successPage" class="card hidden">
+            <h1>heheheheh i knew U Love Me!</h1>
+            <div class="roses">🌹🌹🌹<br>🌹🌹🌹</div>
+            <p style="font-size: 1.2rem; font-weight: bold;">You're mine now, Aylin! ❤️</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        const bgBody = document.getElementById('bgBody');
+        const music = document.getElementById('bgMusic');
+
+        const config = {
+            s1: { bg: 'https://i.postimg.cc/FKDBcngV/Whats-App-Image-2026-02-03-at-9-58-13-PM.jpg', music: 'https://docs.google.com/uc?export=download&id=1XI87ZZnNTZLbUPf1pTqVrfHOZiZs1QEy' },
+            s2: { bg: 'https://i.postimg.cc/7ZQBZTxJ/Whats-App-Image-2026-02-03-at-9-58-14-PM.jpg', music: 'https://docs.google.com/uc?export=download&id=1q9oQ9D7LDNZ8H8IsmeBVdTONYrWOYKZP' },
+            s3: { bg: 'https://i.postimg.cc/tJ5kQsSY/Whats-App-Image-2026-02-03-at-9-58-13-PM-(1).jpg', music: 'https://docs.google.com/uc?export=download&id=12vbVoDGvqtBX4JONFhprkmK-MPttlpyI' },
+            s4: { bg: 'https://i.postimg.cc/RZqRyVcW/Whats-App-Image-2026-02-03-at-9-58-14-PM-(1).jpg', music: 'https://docs.google.com/uc?export=download&id=12vbVoDGvqtBX4JONFhprkmK-MPttlpyI' }
+        };
+
+        // Initialize Stage 1
+        bgBody.style.backgroundImage = `url('${config.s1.bg}')`;
+        music.src = config.s1.music;
+
+        function jumpButton(id, speed) {
+            const btn = document.getElementById(id);
+            btn.style.transition = `${speed}ms`;
+            btn.style.position = 'fixed';
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+        }
+
+        function checkSlider(val) {
+            document.getElementById('sliderValue').innerText = val;
+            const btn = document.getElementById('nextPageBtn');
+            btn.style.opacity = (val == 10) ? "1" : "0.2";
+            btn.style.pointerEvents = (val == 10) ? "auto" : "none";
+        }
+
+        function goToStage2() { hideAll(); show('stage2'); update('s2'); music.play(); }
+        function goToStage3() { hideAll(); show('stage3'); update('s3'); }
+        function goToStage4() { hideAll(); show('stage4'); update('s4'); }
+
+        function showCelebration() {
+            hideAll();
+            show('successPage');
+            music.pause(); // Music stops for firework sounds as requested
+            document.getElementById('successSound').play();
+            
+            // Continuous Sparkles for 5 seconds
+            var end = Date.now() + (5 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function hideAll() { 
+            ['stage1','stage2','stage3','stage4','successPage'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+        }
+        function show(id) { document.getElementById(id).classList.remove('hidden'); }
+        function update(key) {
+            bgBody.style.backgroundImage = `url('${config[key].bg}')`;
+            if(config[key].music && music.src !== config[key].music) {
+                music.src = config[key].music;
+                music.play();
+            }
+        }
+    </script>
+</body>
+</html>
