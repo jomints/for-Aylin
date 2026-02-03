@@ -10,16 +10,9 @@
             background-size: cover; background-position: center; transition: 1s ease-in-out;
             overflow: hidden; background-color: #ff4d6d;
         }
-        /* The Start Screen to unlock Audio */
-        #musicUnlocker {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #ff4d6d; z-index: 9999; display: flex; 
-            flex-direction: column; align-items: center; justify-content: center; 
-            color: white; text-align: center;
-        }
         .overlay {
             height: 100%; display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
         }
         .card {
             background: rgba(255, 255, 255, 0.95);
@@ -27,7 +20,7 @@
             text-align: center; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             width: 85%; max-width: 400px; 
-            min-height: 300px;
+            min-height: 280px;
             display: flex; flex-direction: column; justify-content: center;
             position: relative; border: 3px solid #ff4d6d;
             z-index: 10;
@@ -35,7 +28,7 @@
         .hidden { display: none; }
         h1 { 
             font-size: 1.3rem; color: #222; line-height: 1.5; 
-            margin-bottom: 15px; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); 
+            margin-bottom: 15px; 
         }
         .subtext { font-size: 1rem; color: #ff4d6d; font-weight: bold; display: block; margin-bottom: 20px; }
         
@@ -56,15 +49,9 @@
 </head>
 <body id="bgBody">
 
-    <div id="musicUnlocker">
-        <h1 style="color: white; font-size: 2rem;">For My Aylin ❤️</h1>
-        <p style="margin-bottom: 20px;">Please turn up your volume!</p>
-        <button onclick="startEverything()" style="background: white; color: #ff4d6d; padding: 15px 45px; font-size: 1.5rem; border-radius: 50px;">Open ❤️</button>
-    </div>
-
     <div class="overlay">
-        <audio id="bgMusic" loop preload="auto"></audio>
-        <audio id="successSound" src="https://www.myinstants.com/media/sounds/party-horn.mp3" preload="auto"></audio>
+        <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        <audio id="successSound" src="https://www.myinstants.com/media/sounds/party-horn.mp3"></audio>
 
         <div id="stage1" class="card">
             <h1>Do you know<br>Dr. Jomin / Jommiiii / Pichekanran / Plumber / Thundam Thundam?</h1>
@@ -79,7 +66,6 @@
             <input type="range" id="missSlider" min="1" max="10" value="1" oninput="checkSlider(this.value)">
             <p id="sliderValue">1</p>
             <button id="nextPageBtn" onclick="goToStage3()">Next Page</button>
-            <p style="font-size: 0.8rem; color: #666; margin-top: 15px;">Hint: Drag it to 10! 😉</p>
         </div>
 
         <div id="stage3" class="card hidden">
@@ -113,32 +99,14 @@
         const music = document.getElementById('bgMusic');
 
         const config = {
-            s1: { 
-                bg: 'https://i.postimg.cc/FKDBcngV/Whats-App-Image-2026-02-03-at-9-58-13-PM.jpg', 
-                music: './a.mp3' 
-            }, 
-            s2: { 
-                bg: 'https://i.postimg.cc/7ZQBZTxJ/Whats-App-Image-2026-02-03-at-9-58-14-PM.jpg', 
-                music: './b.wav' 
-            }, 
-            s3: { 
-                bg: 'https://i.postimg.cc/tJ5kQsSY/Whats-App-Image-2026-02-03-at-9-58-13-PM-(1).jpg', 
-                music: './c.mp3' 
-            }, 
-            s4: { 
-                bg: 'https://i.postimg.cc/RZqRyVcW/Whats-App-Image-2026-02-03-at-9-58-14-PM-(1).jpg', 
-                music: './c.mp3' 
-            }
+            s1: 'https://i.postimg.cc/FKDBcngV/Whats-App-Image-2026-02-03-at-9-58-13-PM.jpg',
+            s2: 'https://i.postimg.cc/7ZQBZTxJ/Whats-App-Image-2026-02-03-at-9-58-14-PM.jpg',
+            s3: 'https://i.postimg.cc/tJ5kQsSY/Whats-App-Image-2026-02-03-at-9-58-13-PM-(1).jpg',
+            s4: 'https://i.postimg.cc/RZqRyVcW/Whats-App-Image-2026-02-03-at-9-58-14-PM-(1).jpg'
         };
 
-        // AUDIO UNLOCKER
-        function startEverything() {
-            document.getElementById('musicUnlocker').style.display = 'none';
-            bgBody.style.backgroundImage = `url('${config.s1.bg}')`;
-            music.src = config.s1.music;
-            music.load();
-            music.play().catch(e => console.log("Init play failed", e));
-        }
+        // Set Initial Background
+        bgBody.style.backgroundImage = `url('${config.s1}')`;
 
         function jumpButton(id, speed) {
             const btn = document.getElementById(id);
@@ -155,9 +123,24 @@
             btn.style.pointerEvents = (val == 10) ? "auto" : "none";
         }
 
-        function goToStage2() { hideAll(); show('stage2'); update('s2'); }
-        function goToStage3() { hideAll(); show('stage3'); update('s3'); }
-        function goToStage4() { hideAll(); show('stage4'); update('s4'); }
+        function goToStage2() { 
+            hideAll(); 
+            show('stage2'); 
+            bgBody.style.backgroundImage = `url('${config.s2}')`;
+            music.play(); // Music starts here on first click!
+        }
+        
+        function goToStage3() { 
+            hideAll(); 
+            show('stage3'); 
+            bgBody.style.backgroundImage = `url('${config.s3}')`;
+        }
+
+        function goToStage4() { 
+            hideAll(); 
+            show('stage4'); 
+            bgBody.style.backgroundImage = `url('${config.s4}')`;
+        }
 
         function showCelebration() {
             hideAll();
@@ -179,18 +162,6 @@
             });
         }
         function show(id) { document.getElementById(id).classList.remove('hidden'); }
-        
-        function update(key) {
-            bgBody.style.backgroundImage = `url('${config[key].bg}')`;
-            if(config[key].music) {
-                music.src = config[key].music;
-                music.load();
-                music.play().catch(e => console.log("Playback failed", e));
-            }
-        }
     </script>
 </body>
 </html>
-
-
-
